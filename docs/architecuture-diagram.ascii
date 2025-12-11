@@ -1,0 +1,39 @@
+                           +-------------------+
+                           |   Frontend UI     |
+                           | (Next.js React)   |
+                           | - Upload media    |
+                           | - View results    |
+                           | - Panic exit      |
+                           +---------+---------+
+                                     |
+                                     | HTTPS JSON / Multipart
+                                     v
+                      +--------------+---------------+
+                      |       Node.js Backend        |
+                      | - Routing & controllers      |
+                      | - EXIF remover               |
+                      | - Evidence locker            |
+                      | - PDF report generator       |
+                      | - AES-256 encryption         |
+                      +------+----+----+-----+------+
+                             |    |    |     |
+        /--------------------+    |    |     +------------------\
+        |                         |    |                        |
+        v                         v    v                        v
++---------------+       +----------------+    +---------------------+
+| Model Server  |       | Metadata SRV   |    | Encrypted Locker    |
+| (FastAPI +    |       | EXIF scrubber  |    | - Files (AES)       |
+|   Deepfake ML)|       | GPS removal    |    | - Timers auto-delete |
+| - Heatmaps    |       |                |    | - PDF reports        |
++---------------+       +----------------+    +---------------------+
+        |                         |
+        | detection response      | cleaned media
+        +--------------------------+---------------+
+                                     |
+                                     v
+                           +-----------------------+
+                           |  Result UI            |
+                           |  - Scores             |
+                           |  - Heatmap overlay    |
+                           |  - Reporting links    |
+                           +-----------------------+
