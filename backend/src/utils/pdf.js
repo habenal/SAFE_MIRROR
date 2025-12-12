@@ -11,6 +11,7 @@ exports.generateReportPDF = async (id, imagePath, detection) => {
       <p>ID: ${id}</p>
       <p>Deepfake Score: ${detection.deepfake_score}</p>
       <pre>${JSON.stringify(detection.regions, null, 2)}</pre>
+      <p>Nudity Score: ${detection.nudity_score}</p>
       <img src="data:image/jpeg;base64,${base64}" width="300"/>
     </body>
   </html>

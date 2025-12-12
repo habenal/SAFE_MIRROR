@@ -11,4 +11,6 @@ router.get("/report/:id", controller.getReport);
 
 router.post("/erase/:id", controller.eraseMedia);
 
+router.get("/list", controller.listEvidence);
+
 module.exports = router;

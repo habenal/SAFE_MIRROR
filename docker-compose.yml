@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: ../infra/docker/Dockerfile.backend
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./backend/src/storage:/app/src/storage
+      - ./backend/src/uploads:/app/src/uploads
+    environment:
+      - MODEL_SERVER_URL=http://model-server:5000
+      - PORT=4000
+    depends_on:
+      - model-server
+
+  model-server:
+    build:
+      context: ./model-server
+      dockerfile: ../infra/docker/Dockerfile.model
+    ports:
+      - "5000:5000"
+
+  frontend:
+    build:
+      context: ./frontend/safe_mirror_frontend
+      dockerfile: ../../infra/docker/Dockerfile.frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend

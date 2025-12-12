@@ -61,6 +61,13 @@ exports.getReport = async (req, res) => {
   }
 };
 
+exports.listEvidence = (req, res) => {
+  const records = locker.getAllRecords();
+  // Sort by newest first
+  records.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  res.json(records);
+};
+
 exports.eraseMedia = (req, res) => {
   const { id } = req.params;
   locker.deleteRecord(id);

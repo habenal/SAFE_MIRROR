@@ -1,39 +1,29 @@
-                           +-------------------+
-                           |   Frontend UI     |
-                           | (Next.js React)   |
-                           | - Upload media    |
-                           | - View results    |
-                           | - Panic exit      |
-                           +---------+---------+
-                                     |
-                                     | HTTPS JSON / Multipart
-                                     v
-                      +--------------+---------------+
-                      |       Node.js Backend        |
-                      | - Routing & controllers      |
-                      | - EXIF remover               |
-                      | - Evidence locker            |
-                      | - PDF report generator       |
-                      | - AES-256 encryption         |
-                      +------+----+----+-----+------+
-                             |    |    |     |
-        /--------------------+    |    |     +------------------\
-        |                         |    |                        |
-        v                         v    v                        v
-+---------------+       +----------------+    +---------------------+
-| Model Server  |       | Metadata SRV   |    | Encrypted Locker    |
-| (FastAPI +    |       | EXIF scrubber  |    | - Files (AES)       |
-|   Deepfake ML)|       | GPS removal    |    | - Timers auto-delete |
-| - Heatmaps    |       |                |    | - PDF reports        |
-+---------------+       +----------------+    +---------------------+
-        |                         |
-        | detection response      | cleaned media
-        +--------------------------+---------------+
-                                     |
-                                     v
-                           +-----------------------+
-                           |  Result UI            |
-                           |  - Scores             |
-                           |  - Heatmap overlay    |
-                           |  - Reporting links    |
-                           +-----------------------+
++-------------------------------------------------------+
+|                   USER WORKSTATION                    |
+|                                                       |
+|  +---------------------+      +--------------------+  |
+|  |    Frontend SPA     |      |   Browser Local    |  |
+|  | (React + Vite)      |<---->| (Safe View Blur)   |  |
+|  | - Survivor UI       |      +--------------------+  |
+|  | - Consent Modal     |                              |
+|  +----------+----------+                              |
+|             | HTTP / JSON                             |
+|             v                                         |
+|  +----------+----------+      +--------------------+  |
+|  |   Node.js Backend   |<---->|  Evidence Locker   |  |
+|  | (Express Server)    |      | (Encrypted Storage)|  |
+|  | - /analyze endpoint |      | - locker.json      |  |
+|  | - Encryption (AES)  |      | - .pdf (encrypted) |  |
+|  | - PDF Generation    |      +--------------------+  |
+|  +----------+----------+                              |
+|             | HTTP POST                               |
+|             v                                         |
+|  +----------+----------+                              |
+|  |   Model Server      |                              |
+|  | (Python Flask)      |                              |
+|  | - Deepfake Score    |                              |
+|  | - Nudity Check      |                              |
+|  +---------------------+                              |
+|                                                       |
++-------------------------------------------------------+
+       ^ All running in Docker Compose Network
